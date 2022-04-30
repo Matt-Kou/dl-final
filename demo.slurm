@@ -36,5 +36,5 @@ singularity exec --nv \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate
-python run.py
+python run.py --bs 2 --backbone_subtitle ep70
 "
