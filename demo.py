@@ -17,6 +17,18 @@ from engine import train_one_epoch, evaluate
 
 from dataset import UnlabeledDataset, LabeledDataset
 
+
+from torchvision.models.detection.backbone_utils import _resnet_fpn_extractor, _validate_trainable_layers
+from torchvision.models.detection.faster_rcnn import FasterRCNN, FastRCNNPredictor
+
+def faster_rcnn(backbone, num_classes=100, progress=True, trainable_backbone_layers=None, **kwargs):
+    trainable_backbone_layers = _validate_trainable_layers(
+        False, trainable_backbone_layers, 5, 3
+    )
+    backbone = _resnet_fpn_extractor(backbone, trainable_backbone_layers)
+    model = FasterRCNN(backbone, num_classes, **kwargs)
+    return model
+
 def get_transform(train):
     transforms = []
     transforms.append(T.ToTensor())
@@ -25,7 +37,8 @@ def get_transform(train):
     return T.Compose(transforms)
 
 def get_model(num_classes):
-    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False)
+    backbone = torch.load("zoo/backbone")
+    model = faster_rcnn(backbone)
 
     # get number of input features for the classifier
     in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -48,10 +61,10 @@ def main():
     model.to(device)
 
     params = [p for p in model.parameters() if p.requires_grad]
-    optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
+    optimizer = torch.optim.Adam(params, lr=0.005)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-    num_epochs = 1
+    num_epochs = 10
 
     for epoch in range(num_epochs):
         # train for one epoch, printing every 10 iterations
@@ -60,7 +73,7 @@ def main():
         lr_scheduler.step()
         # evaluate on the test dataset
         evaluate(model, valid_loader, device=device)
-
+        torch.save(model, f"model_epoch_{epoch}")
     print("That's it!")
 
 if __name__ == "__main__":
