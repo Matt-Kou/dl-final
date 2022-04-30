@@ -162,3 +162,5 @@ cython_debug/
 datasets
 temp
 zoo
+*.out
+*.err
