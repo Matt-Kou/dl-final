@@ -68,7 +68,10 @@ def main(args):
     valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.bs, shuffle=False, num_workers=2,
                                                collate_fn=utils.collate_fn)
 
-    model = get_model(args.num_classes, backbone_path=os.path.join('backbone', f'{args.backbone_type}-{args.backbone_subtitle}'), model=args.model)
+    model = get_model(args.num_classes,
+                      backbone_path=os.path.join('zoo', 'backbone', f'{args.backbone_type}-{args.backbone_subtitle}'),
+                      model=args.model,
+                      pretrained_path=args.pretrained)
     model.to(device)
 
     params = [p for p in model.parameters() if p.requires_grad]
@@ -99,5 +102,6 @@ if __name__ == "__main__":
     parser.add_argument('--lr', type=float, default=0.0005, help='learning rate')
     parser.add_argument('--output_subname', type=str, default='', help='output subname')
     parser.add_argument('--model', type=str, default='fasterrcnn', help='Faster RCNN, DETR, Detectron2')
+    parser.add_argument('--pretrained', type=str, default=None, help="pretrained model")
     args = parser.parse_args()
     main(args)
