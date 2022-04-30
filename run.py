@@ -68,7 +68,7 @@ def main(args):
     valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.bs, shuffle=False, num_workers=2,
                                                collate_fn=utils.collate_fn)
 
-    model = get_model(args.num_classes, model=args.model)
+    model = get_model(args.num_classes, backbone_path=os.path.join('backbone', f'{args.backbone_type}-{args.backbone_subtitle}'), model=args.model)
     model.to(device)
 
     params = [p for p in model.parameters() if p.requires_grad]
