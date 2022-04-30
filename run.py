@@ -93,7 +93,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--bs', type=int, default=64, help='batch size')
+    parser.add_argument('--bs', type=int, default=16, help='batch size')
     parser.add_argument('--num_epochs', type=int, default=100, help='number of epochs')
     parser.add_argument('--backbone_type', type=str, default='resnet', help='type of backbone (resnet, vit)')
     parser.add_argument('--backbone_subtitle', type=str, default='ep35', help='backbone subtitle')
