@@ -43,8 +43,12 @@ def faster_rcnn(backbone, num_classes=100, trainable_backbone_layers=None, **kwa
 def get_model(num_classes, backbone_path=None, pretrained_path=None, model='fasterrcnn'):
     if model == 'fasterrcnn':
         if pretrained_path:
-            assert os.path.isfile(pretrained_path)
-            return torch.load(pretrained_path)
+            pretrained = torch.load(os.path.join("zoo", "resnet-ep70--_ep11"))
+            backbone = torch.load(backbone_path)
+            model = faster_rcnn(backbone)
+            pretrained.backbone = model.backbone
+            return pretrained
+
 
         backbone = torch.load(backbone_path)
         model = faster_rcnn(backbone)
