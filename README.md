@@ -15,7 +15,7 @@ Use unsupervised learning technique to do object detection.
 
 ## Solution:
 
-We use **Dino **to pretrain the resnet-50 backbone and then use fastrcnn to train the model for object detection.
+We use **Dino **to pretrain the resnet-50 backbone and then use faster rcnn to train the model for object detection.
 
 (We tried to use **SWAV** but Dino performs way better than SWAV. ) 
 
@@ -29,7 +29,7 @@ We use **Dino **to pretrain the resnet-50 backbone and then use fastrcnn to trai
 
 **Yifeng Kou**: 
 
-### Fast RCNN:
+### Faster RCNN:
 
 Save the model from DINO training and the teacher backbone.
 
