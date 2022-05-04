@@ -21,13 +21,11 @@ We use **Dino **to pretrain the resnet-50 backbone and then use faster rcnn to t
 
 ## Usage:
 
-### Dino (to get the backbone):
+## Resnet backbone from DINO:
 
- **Yifeng Kou**: 
+Everything to get the resnet backbone is in this repo: https://github.com/Matt-Kou/dino-dl-final/blob/master/README.md
 
-### To get the teacher backbone:
-
-**Yifeng Kou**: 
+Basic logic: train the resnet backbone using DINO, that pull out the teacher backbone using get_backbone.ipynb 
 
 ### Faster RCNN:
 
