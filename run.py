@@ -86,7 +86,7 @@ def main(args):
     model.to(device)
 
     params = [p for p in model.parameters() if p.requires_grad]
-    optimizer = torch.optim.Adam(params, lr=args.lr)
+    optimizer = torch.optim.AdamW(params, lr=args.lr)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
     for epoch in range(args.num_epochs):
