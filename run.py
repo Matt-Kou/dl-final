@@ -8,7 +8,7 @@ import argparse
 import torch
 # import torch.nn as nn
 # import torch.nn.functional as F
-# import torchvision
+import torchvision
 # from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
 import transforms as T
@@ -27,7 +27,7 @@ def get_transform(train):
     transforms.append(T.ToTensor())
     if train:
         transforms.append(T.RandomHorizontalFlip(0.5))
-        transforms.append(T.RandomVerticalFlip(0.5))
+        # transforms.append(T.RandomVerticalFlip(0.5))
     return T.Compose(transforms)
 
 
@@ -58,6 +58,13 @@ def get_model(num_classes, backbone_path=None, pretrained_path=None, model='fast
         # replace the pre-trained head with a new one
         model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
 
+        return model
+    elif model == "pretrained":
+        model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
+        # get number of input features for the classifier
+        in_features = model.roi_heads.box_predictor.cls_score.in_features
+        # replace the pre-trained head with a new one
+        model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
         return model
     raise NotImplementedError("model not implemented")
 
@@ -102,7 +109,7 @@ if __name__ == "__main__":
     parser.add_argument('--backbone_type', type=str, default='resnet', help='type of backbone (resnet, vit)')
     parser.add_argument('--backbone_subtitle', type=str, default='ep35', help='backbone subtitle')
     parser.add_argument('--num_classes', type=int, default=100, help='numer of classes')
-    parser.add_argument('--dataset', type=str, default='/labeled', help='the path of the labeled dataset')
+    parser.add_argument('--dataset', type=str, default='/scratch/yk1962/datasets/labeled_data', help='the path of the labeled dataset')
     parser.add_argument('--lr', type=float, default=0.0005, help='learning rate')
     parser.add_argument('--output_subname', type=str, default='', help='output subname')
     parser.add_argument('--model', type=str, default='fasterrcnn', help='Faster RCNN, DETR, Detectron2')
