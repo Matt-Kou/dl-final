@@ -39,7 +39,7 @@ def main():
 
     num_classes = 100
 
-    valid_dataset = LabeledDataset(root='/labeled', split="validation", transforms=get_transform(train=False))
+    valid_dataset = LabeledDataset(root='/scratch/yk1962/datasets/labeled_data', split="validation", transforms=get_transform(train=False))
     valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=2, shuffle=False, num_workers=2, collate_fn=utils.collate_fn)
 
     model = torch.load("model_first_submission")
