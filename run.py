@@ -81,6 +81,7 @@ def get_model(num_classes, backbone_path=None, pretrained_path=None, model='fast
         in_features = model.roi_heads.box_predictor.cls_score.in_features
         # replace the pre-trained head with a new one
         model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+        return model
     raise NotImplementedError("model not implemented")
 
 def main(args):
