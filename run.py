@@ -60,7 +60,7 @@ def get_model(num_classes, backbone_path=None, pretrained_path=None, model='fast
 
         return model
     elif model == "pretrained":
-        model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
+        model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True, trainable_backbone_layers=0)
         # get number of input features for the classifier
         in_features = model.roi_heads.box_predictor.cls_score.in_features
         # replace the pre-trained head with a new one
@@ -96,7 +96,7 @@ def main(args):
         lr_scheduler.step()
         # evaluate on the test dataset
         evaluate(model, valid_loader, device=device)
-        torch.save(model, os.path.join("zoo", f"{args.backbone_type}-{args.backbone_subtitle}-{args.output_subname}"
+        torch.save(model, os.path.join("zoo", f"{args.backbone_type}-{args.backbone_subtitle}-{args.output_subname}-lr{args.lr}-bs{args.bs}"
                                               f"-_ep{epoch}"))
 
     print("That's it!")
