@@ -164,3 +164,4 @@ temp
 zoo
 *.out
 *.err
+resnet.pth
