@@ -74,7 +74,7 @@ def get_model(num_classes, backbone_path=None, pretrained_path=None, model='fast
         model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
         return model
     elif model == "ssl_pretrained":
-        model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False, pretrained_backbone=False, trainable_backbone_layers=0)
+        model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False, pretrained_backbone=False, trainable_backbone_layers=5)
         msg = model.backbone.load_state_dict(torch.load("resnet.pth"), strict=False)
         print(msg)
         # get number of input features for the classifier
